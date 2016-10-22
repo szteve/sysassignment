@@ -1,0 +1,86 @@
+#!/bin/bash
+
+MY_DIR="/home/$(whoami)"
+
+#main while for menu
+cd /home
+cd $whoami
+
+#declare functions
+
+fun_exit()
+{
+	clear
+	echo "GOODBYE"
+	exit
+}
+
+fun_passwd()
+{
+	echo "$(pwd)"
+}
+
+fun_ip()
+{
+	echo "$(ifconfig eth0)"
+}
+
+fun_date()
+{
+	echo "$(date +%Y%m%d%H%M%S)"
+}
+
+fun_ud()
+{
+	echo "$(id -u) $(id -g) $(whoami) $(id -gn)"
+	DIR=/home
+	stat -c '%i' $DIR
+}
+
+#creates while loop that will continue to run until exit
+while :
+do
+	#display menu
+	echo "====================================================="
+	echo "=============Hello $(whoami) enter a command============="
+	echo "====================================================="
+	read option
+
+	case $option in
+		"pw")	fun_passwd;;
+	       "ifc")   fun_ip;;
+	        "dt")   fun_date;;
+		"ud")   fun_ud;;
+              "exit")	fun_exit;;
+		   *)	echo "command not allowed please enter another";;
+	esac
+done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
