@@ -1,13 +1,15 @@
 #!/bin/bash
+#sysintegration assignment 1
+# Stephen O'Neill C133317851
 
-MY_DIR="/home/$(whoami)"
+#clear screen
+clear
 
-#main while for menu
+#bring user to their specific directory (ensures pw works)
 cd /home
 cd $whoami
 
 #declare functions
-
 fun_exit()
 {
 	clear
@@ -15,14 +17,14 @@ fun_exit()
 	exit
 }
 
-fun_passwd()
+fun_pwd()
 {
 	echo "$(pwd)"
 }
 
 fun_ip()
 {
-	echo "$(ifconfig eth0)"
+	echo "$(ifconfig eno1)"
 }
 
 fun_date()
@@ -37,6 +39,20 @@ fun_ud()
 	stat -c '%i' $DIR
 }
 
+fun_help()
+{
+	echo "HI $(whoami), i see youre having some trouble"
+	echo "These are the commands available to you"
+	echo "Simply type one of these and hit enter :D"
+	echo " pw : prints working directory"
+	echo "ifc : prints ip configuration"
+	echo " dt : prints off the current date and time"
+        echo " ud : prints userID,groupID,username,groupname,iNODE of users home directory"
+	echo "help: prints this screen :D"
+	echo "exit: exits the shell and logs you out"
+
+}
+
 #creates while loop that will continue to run until exit
 while :
 do
@@ -47,12 +63,13 @@ do
 	read option
 
 	case $option in
-		"pw")	fun_passwd;;
+		"pw")	fun_pwd;;
 	       "ifc")   fun_ip;;
 	        "dt")   fun_date;;
 		"ud")   fun_ud;;
+	      "help")   fun_help;;
               "exit")	fun_exit;;
-		   *)	echo "command not allowed please enter another";;
+		   *)	echo "command not allowed please enter another or type: help to list all available to you";;
 	esac
 done
 
