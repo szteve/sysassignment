@@ -9,7 +9,13 @@ clear
 cd /home
 cd $whoami
 
+#global variables
+tail_array=""
+option=""
+
 #declare functions
+
+#exit shell
 fun_exit()
 {
 	clear
@@ -17,31 +23,61 @@ fun_exit()
 	exit
 }
 
+#displays current working directory
 fun_pwd()
 {
 	echo "$(pwd)"
 }
+#also displays current working directory but allows tails to be entered though they are ignored
+fun_pwd_tail()
+{
+	#runs through tail array  to make sure its a tail
+        for ((i=1; i<"${#tail_array[@]}"; i++))
+        do
+                echo "command tails are not allowed nice try"
+                echo "$(pwd)"
+        done
+}
 
+#shows ipconfig for the default connection which on my linux is eno1 on others coiuld be eth0
 fun_ip()
 {
 	echo "$(ifconfig eno1)"
 }
 
+#shows ipconfig for tails and reads the input of the user entered tail to show the user 
+#the tail they wanted
+fun_ip_tail()
+{
+	for ((i=1; i<"${#tail_array[@]}"; i++))
+        do
+                echo "command tails are allowed"
+                #checks to see what tail the user provided, if it is incorrect then it will not be allowed
+		if test "${tail_array[$i]}" == "-a" -o "${tail_array[$i]}" == "eno1" -o "${tail_array[$i]}" == "-s" -o "${tail_array[$i]}" == "lo" -o "${tail_array[$i]}" == "wlo1"   
+		then
+			#print user specified information
+			ifconfig "${tail_array[$i])}" 
+		fi
+        done
+}
+
+#displays current time and date
 fun_date()
 {
 	echo "$(date +%Y%m%d%H%M%S)"
 }
-
+#displays userID, groupID, username, groupname, iNode of users home directory
 fun_ud()
 {
 	echo "$(id -u) $(id -g) $(whoami) $(id -gn)"
 	DIR=/home
 	stat -c '%i' $DIR
 }
-
+#lists files and directories for user
 fun_ls()
-{
+{	
 	echo "$(ls)"
+	echo
 }
 #creates file for user
 fun_file()
@@ -60,55 +96,102 @@ fun_file()
 fun_edit()
 {
 	echo "Please enter name of the file you wish to edit"
-        read file_name
-        nano $file_name
-}
+	if [ -e $file_name ]
+        then
+                echo "sorry file does not exist, enter another name"
 
+        else
+	        read file_name
+        	nano $file_name
+	fi
+}
+#deletes file 
 fun_del()
 {
         echo "enter file name you wish to delete"
-        read del_file
-        rm $del_file
+	if [ -e $file_name ]
+        then
+                echo "sorry file does not exist, enter another name"
+
+        else
+	        read del_file
+                rm $del_file
+	fi
+}
+
+fun_passwd()
+{
+	echo " $(passwd)"
+	echo "your password has been changed $(whoami)"
+	echo
 }
 
 
+#prints help screen for user to see what commands they can use
 fun_help()
 {
+	echo
 	echo "HI $(whoami), i see youre having some trouble"
 	echo "These are the commands available to you"
 	echo "Simply type one of these and hit enter :D"
-	echo " pw : prints working directory"
-	echo "ifc : prints ip configuration"
-	echo " dt : prints off the current date and time"
-        echo " ud : prints userID,groupID,username,groupname,iNODE of users home directory"
-	echo "file: create a file in youre directory"
-	echo "edit: edit a file specified"
-	echo "help: prints this screen :D"
-	echo "exit: exits the shell and logs you out"
+	echo
+	echo "      pw : prints working directory"
+	echo "     ifc : prints ip configuration"
+	echo "      dt : prints off the current date and time"
+        echo "      ud : prints userID,groupID,username,groupname,iNODE of users home directory"
+	echo "     list: lists all files and directories"
+	echo "     file: create a file in youre directory"
+	echo "     edit: edit a file specified"
+        echo "   delete: will give you the option to delete a file"
+	echo "    clear: clears the screen"
+	echo " password: allows you to change your password"
+	echo "     help: prints this screen :D"
+	echo "     exit: exits the shell and logs you out"
 
+}
+#clear screen
+fun_clear()
+{
+	clear
 }
 
 #creates while loop that will continue to run until exit
 while :
 do
 	#display menu
+	echo
 	echo "====================================================="
 	echo "=============Hello $(whoami) enter a command============="
 	echo "====================================================="
+	echo
 	read option
+	#check if option has tail through using an array
+	tail_array=( $option )
+	if test "${#tail_array[@]}" -gt "1"
+       	then
+               if test "${tail_array[0]}" == "pw"
+               then
+                       fun_pwd_tail
+	       elif test "${tail_array[0]}" == "ifc"
+	       then
+		       fun_ip_tail
+	       fi
+	fi
 
 	case $option in
-		"pw")	fun_pwd;;
-	       "ifc")   fun_ip;;
-	        "dt")   fun_date;;
-		"ud")   fun_ud;;
-	      "help")   fun_help;;
-	      "list")   fun_ls;;
-	      "file")	fun_file;;
-  	      "edit")   fun_edit;;
-	    "delete")	fun_del;;
-              "exit")	fun_exit;;
-		   *)	echo "command not allowed please enter another or type: help to list all available to you";;
+		 "pw")	fun_pwd;;
+	        "ifc")  fun_ip;;
+	         "dt")  fun_date;;
+		 "ud")  fun_ud;;
+	       "help")  fun_help;;
+	       "list")  fun_ls;;
+	       "file")	fun_file;;
+  	       "edit")  fun_edit;;
+	     "delete")  fun_del;;
+	   "password")  fun_passwd;;
+	      "clear")  fun_clear;;
+               "exit")	fun_exit;;
+		    *)	echo "please enter command another or type: help to list all available to you";;
 	esac
 done
 
