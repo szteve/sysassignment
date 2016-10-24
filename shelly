@@ -147,6 +147,25 @@ fun_delfol()
         fi
 }
 
+#allows user to move to folder
+fun_open()
+{
+	echo "enter folder name you wish to open"
+        read folder_name
+        if [ -e $folder_name ]
+        then
+                cd $folder_name
+		echo "you are now in the folder"
+
+        else
+                echo "sorry folder does not exist, enter another name"
+        fi
+}
+
+fun_close()
+{
+	cd
+}
 
 fun_passwd()
 {
@@ -174,6 +193,8 @@ fun_help()
         echo "  deletefile: will give you the option to delete a file"
 	echo "      folder: create folder"
 	echo "deletefolder: deletes folder"
+	echo "  openfolder: allows you to open a folder "
+	echo " closefolder: close the folder brings you back to home"
 	echo "       clear: clears the screen"
 	echo "    password: allows you to change your password"
 	echo "        help: prints this screen :D"
@@ -221,6 +242,8 @@ do
 	 "deletefile")  fun_delfile;;
 	     "folder")  fun_folder;;
        "deletefolder")  fun_delfol;;
+	 "openfolder")  fun_open;;
+	"closefolder")  fun_close;;
 	   "password")  fun_passwd;;
 	      "clear")  fun_clear;;
                "exit")	fun_exit;;
