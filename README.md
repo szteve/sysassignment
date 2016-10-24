@@ -14,25 +14,32 @@ This was what i have set out to accompplish with my code
 
   git clone https://github.com/szteve/sysassignment
 
-2.cd into the repo using: cd sysassignment
+2.cd into the repo using command
+        
+        cd sysassignment
 
 3.Compile the code using 
 
-  sudo chmod 775 backup NOTE: must have password for sudo to work
+    sudo chmod 775 shelly
+    NOTE: must have password for sudo to work
 
-4.Now the shell is on youre system you must specify it to the user
+4.Now the shell is on your system you must specify it to the user
 
 ### User 
 If a user for the shell doesnt exist then you must create one
 
-1.To create user use commmand :  useradd -m username
-2.Now you must set a password for the user using command : passwd
+1.To create user use commmand :  
+
+    useradd -m username
+2.Now you must set a password for the user using command : 
+    
+    passwd
 
 Now that the user is created we can move on to specifying the shell for the user
 
 1.To point the user to the shell we use the command usermod as such
 
-         usermod -s directoryname/sysassignment/shelly username
+    usermod -s directoryname/sysassignment/shelly username
          
 After running this command the user will be specified to the shell
 Now when the user logs in all they will see is the custom shell
