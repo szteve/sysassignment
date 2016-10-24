@@ -39,6 +39,39 @@ fun_ud()
 	stat -c '%i' $DIR
 }
 
+fun_ls()
+{
+	echo "$(ls)"
+}
+#creates file for user
+fun_file()
+{
+	echo "Please enter name of the file"
+	read file_name
+	if [ -e $file_name ]
+	then
+		echo "sorry file already exists, enter another name"
+
+	else
+		touch $file_name
+	fi
+}
+#edit file for user
+fun_edit()
+{
+	echo "Please enter name of the file you wish to edit"
+        read file_name
+        nano $file_name
+}
+
+fun_del()
+{
+        echo "enter file name you wish to delete"
+        read del_file
+        rm $del_file
+}
+
+
 fun_help()
 {
 	echo "HI $(whoami), i see youre having some trouble"
@@ -48,6 +81,8 @@ fun_help()
 	echo "ifc : prints ip configuration"
 	echo " dt : prints off the current date and time"
         echo " ud : prints userID,groupID,username,groupname,iNODE of users home directory"
+	echo "file: create a file in youre directory"
+	echo "edit: edit a file specified"
 	echo "help: prints this screen :D"
 	echo "exit: exits the shell and logs you out"
 
@@ -68,6 +103,10 @@ do
 	        "dt")   fun_date;;
 		"ud")   fun_ud;;
 	      "help")   fun_help;;
+	      "list")   fun_ls;;
+	      "file")	fun_file;;
+  	      "edit")   fun_edit;;
+	    "delete")	fun_del;;
               "exit")	fun_exit;;
 		   *)	echo "command not allowed please enter another or type: help to list all available to you";;
 	esac
