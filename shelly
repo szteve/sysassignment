@@ -96,28 +96,57 @@ fun_file()
 fun_edit()
 {
 	echo "Please enter name of the file you wish to edit"
+	read file_name
 	if [ -e $file_name ]
         then
-                echo "sorry file does not exist, enter another name"
-
+		nano $file_name
         else
-	        read file_name
-        	nano $file_name
+        	 echo "sorry file does not exist, enter another name"
+
 	fi
 }
 #deletes file 
-fun_del()
+fun_delfile()
 {
         echo "enter file name you wish to delete"
+	read file_name
 	if [ -e $file_name ]
         then
-                echo "sorry file does not exist, enter another name"
+                rm $file_name
 
         else
-	        read del_file
-                rm $del_file
+  		echo "sorry file does not exist, enter another name"
 	fi
 }
+
+#creates folder for user
+fun_folder()
+{
+        echo "Please enter name of the folder"
+        read folder_name
+        if [ -e $folder_name ]
+        then
+                echo "sorry folder already exists, enter another name"
+
+        else
+                mkdir $folder_name
+        fi
+}
+
+#deletes folder 
+fun_delfol()
+{
+        echo "enter folder name you wish to delete"
+	read folder_del
+        if [ -e $folder_del ]
+        then
+	        rm -r $folder_del
+
+        else
+                echo "sorry folder does not exist, enter another name"
+        fi
+}
+
 
 fun_passwd()
 {
@@ -135,18 +164,20 @@ fun_help()
 	echo "These are the commands available to you"
 	echo "Simply type one of these and hit enter :D"
 	echo
-	echo "      pw : prints working directory"
-	echo "     ifc : prints ip configuration"
-	echo "      dt : prints off the current date and time"
-        echo "      ud : prints userID,groupID,username,groupname,iNODE of users home directory"
-	echo "     list: lists all files and directories"
-	echo "     file: create a file in youre directory"
-	echo "     edit: edit a file specified"
-        echo "   delete: will give you the option to delete a file"
-	echo "    clear: clears the screen"
-	echo " password: allows you to change your password"
-	echo "     help: prints this screen :D"
-	echo "     exit: exits the shell and logs you out"
+	echo "         pw : prints working directory"
+	echo "        ifc : prints ip configuration"
+	echo "         dt : prints off the current date and time"
+        echo "         ud : prints userID,groupID,username,groupname,iNODE of users home directory"
+	echo "        list: lists all files and directories"
+	echo "        file: create a file in youre directory"
+	echo "        edit: edit a file specified"
+        echo "  deletefile: will give you the option to delete a file"
+	echo "      folder: create folder"
+	echo "deletefolder: deletes folder"
+	echo "       clear: clears the screen"
+	echo "    password: allows you to change your password"
+	echo "        help: prints this screen :D"
+	echo "        exit: exits the shell and logs you out"
 
 }
 #clear screen
@@ -187,7 +218,9 @@ do
 	       "list")  fun_ls;;
 	       "file")	fun_file;;
   	       "edit")  fun_edit;;
-	     "delete")  fun_del;;
+	 "deletefile")  fun_delfile;;
+	     "folder")  fun_folder;;
+       "deletefolder")  fun_delfol;;
 	   "password")  fun_passwd;;
 	      "clear")  fun_clear;;
                "exit")	fun_exit;;
